@@ -1,0 +1,6 @@
+func print(s: String) : Void {};
+class Memory {
+    func read(offset : Integer64, length: Integer64) : String {};
+    func write(offset : Integer64, data: String) : String {};
+    func size() : Integer64 {};
+};

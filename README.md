@@ -4,8 +4,8 @@ Here's how this is supposed to work
 ```
 mkdir build
 cd build
-cmake ../hw1 -DCMAKE_VERBOSE_MAKEFILE=1
-make -j`nproc`
+cmake ../ -DCMAKE_VERBOSE_MAKEFILE=1
+cmake --build . -- -j`nproc`
 ```
 
 For Mac users installed flex w "brew":
@@ -14,7 +14,7 @@ For Mac users installed flex w "brew":
 mkdir build
 cd build
 cmake ../ -D FL_LIBRARY=/opt/homebrew/opt/flex/lib/libfl.a -D FL_INCLUDE_DIR=/opt/homebrew/opt/flex/include -D BISON_EXECUTABLE=/opt/homebrew/opt/bison/bin/bison
-make -j`nproc`
+cmake --build . -- -j`nproc`
 ```
 
 Once the code compiles, you can use the ``ctest`` command to run the

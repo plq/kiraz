@@ -32,7 +32,9 @@ int yyerror(const char *s) {
         fmt::print("** Parser Error at {}:{}, null token\n",
             yylineno, Token::colno);
     }
+
     Token::colno = 0;
     Node::reset_root();
+
     return 1;
 }
