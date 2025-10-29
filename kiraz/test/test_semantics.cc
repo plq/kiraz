@@ -118,11 +118,11 @@ struct CompilerFixture : public ::testing::Test {
 };
 
 TEST_F(CompilerFixture, class_subsymbol) {
-    verify_ok("class C { let i = 0; }; func f() : Void { let c: C; c.i;};");
+    verify_ok("class C { let i = 0; }; func f() : Null { let c: C; c.i;};");
 }
 
 TEST_F(CompilerFixture, class_subsymbol_missing) {
-    verify_error("class C { let i = 0; }; func f():Void{ let c: C; c.j;};",
+    verify_error("class C { let i = 0; }; func f():Null{ let c: C; c.j;};",
             "Identifier 'c.j' is not found");
 }
 
@@ -135,11 +135,11 @@ TEST_F(CompilerFixture, class_parent_missing) {
 }
 
 TEST_F(CompilerFixture, class_parent_subsymbol) {
-    verify_ok("class P { let i = 0; }; class C:P {}; func f() : Void { let c: C; c.i = 5; };");
+    verify_ok("class P { let i = 0; }; class C:P {}; func f() : Null { let c: C; c.i = 5; };");
 }
 
 TEST_F(CompilerFixture, class_parent_subclass_assignment) {
-    verify_ok("class P { let i = 0; }; class C:P {}; func f() : Void { let c: C; let p: P = c; };");
+    verify_ok("class P { let i = 0; }; class C:P {}; func f() : Null { let c: C; let p: P = c; };");
 }
 
 TEST_F(CompilerFixture, class_parent_subsymbol_no_redef) {
@@ -148,7 +148,7 @@ TEST_F(CompilerFixture, class_parent_subsymbol_no_redef) {
 }
 
 TEST_F(CompilerFixture, import_missing) {
-    verify_error("func f() : Void { io.foo.bar();\n };", "Identifier 'io' is not found");
+    verify_error("func f() : Null { io.foo.bar();\n };", "Identifier 'io' is not found");
 }
 
 TEST_F(CompilerFixture, func_rettype_missing) {
@@ -157,40 +157,40 @@ TEST_F(CompilerFixture, func_rettype_missing) {
 }
 
 TEST_F(CompilerFixture, func_argtype_missing) {
-    verify_error("func f(a: A) : Void { };",
+    verify_error("func f(a: A) : Null { };",
             "Identifier 'A' in type of argument 'a' in function 'f' is not found");
 }
 
 TEST_F(CompilerFixture, func_arg_dup) {
-    verify_error("func f(a: Integer64, a: Integer64) : Void { };",
+    verify_error("func f(a: Integer64, a: Integer64) : Null { };",
             "Identifier 'a' in argument list of function 'f' is already in symtab");
 }
 
 TEST_F(CompilerFixture, func_arg_name_dup) {
-    verify_error("func f(f: Integer64) : Void { };",
+    verify_error("func f(f: Integer64) : Null { };",
             "Identifier 'f' in argument list of function 'f' is already in symtab");
 }
 
 TEST_F(CompilerFixture, func_adjacent) {
-    verify_ok("func f(a: Integer64) : Void { };"
-              "func g(a: Integer64) : Void { };");
+    verify_ok("func f(a: Integer64) : Null { };"
+              "func g(a: Integer64) : Null { };");
 }
 
 TEST_F(CompilerFixture, var_missing) {
-    verify_error("func f() : Void { a; };", "Identifier 'a' is not found");
+    verify_error("func f() : Null { a; };", "Identifier 'a' is not found");
 }
 
 TEST_F(CompilerFixture, var_found) {
-    verify_ok("func f() : Void { let a = 5; a; };");
+    verify_ok("func f() : Null { let a = 5; a; };");
 }
 
 TEST_F(CompilerFixture, var_scoped_conflict) {
     verify_error(
-            "let a = 5; func f() : Void { let a = 5; };", "Identifier 'a' is already in symtab");
+            "let a = 5; func f() : Null { let a = 5; };", "Identifier 'a' is already in symtab");
 }
 
 TEST_F(CompilerFixture, var_scoped) {
-    verify_ok("func f() : Void { let a = 5; }; let a = 5;");
+    verify_ok("func f() : Null { let a = 5; }; let a = 5;");
 }
 
 TEST_F(CompilerFixture, class_scope) {
@@ -203,28 +203,28 @@ TEST_F(CompilerFixture, class_scope_var_var_conflict) {
 
 TEST_F(CompilerFixture, class_scope_var_func_conflict) {
     verify_error(
-            "class A { let a = 5; func a() : Void {}; };", "Identifier 'a' is already in symtab");
+            "class A { let a = 5; func a() : Null {}; };", "Identifier 'a' is already in symtab");
 }
 
 TEST_F(CompilerFixture, func_name_conflict) {
-    verify_error("class A { }; func A() :Void {};", "Identifier 'A' is already in symtab");
+    verify_error("class A { }; func A() :Null {};", "Identifier 'A' is already in symtab");
 }
 
 TEST_F(CompilerFixture, op_add_int) {
-    verify_ok("func f() : Void { let a = 5; let b = 10; let c = a + b; };");
+    verify_ok("func f() : Null { let a = 5; let b = 10; let c = a + b; };");
 }
 
 TEST_F(CompilerFixture, op_add_str) {
-    verify_ok(R"(func f() : Void { let a = "5"; let b = "10"; let c = a + b; };)");
+    verify_ok(R"(func f() : Null { let a = "5"; let b = "10"; let c = a + b; };)");
 }
 
 TEST_F(CompilerFixture, op_add_type_mismatch) {
-    verify_error(R"(func f() : Void { let a = 5; let b = "10"; let c = a + b; };)",
+    verify_error(R"(func f() : Null { let a = 5; let b = "10"; let c = a + b; };)",
             "Operator '+' not defined for types 'Integer64' and 'String'");
 }
 
 TEST_F(CompilerFixture, class_method_conflict) {
-    verify_error("class A { func A() :Void {}; };", "Identifier 'A' is already in symtab");
+    verify_error("class A { func A() :Null {}; };", "Identifier 'A' is already in symtab");
 }
 
 TEST_F(CompilerFixture, class_member_conflict) {
@@ -232,15 +232,15 @@ TEST_F(CompilerFixture, class_member_conflict) {
 }
 
 TEST_F(CompilerFixture, class_name_conflict) {
-    verify_error("func C() :Void {}; class C { };", "Identifier 'C' is already in symtab");
+    verify_error("func C() :Null {}; class C { };", "Identifier 'C' is already in symtab");
 }
 
 TEST_F(CompilerFixture, class_scope_var_func_parent_scope) {
-    verify_ok("class A { let a = 5; func f() : Void { a; }; };");
+    verify_ok("class A { let a = 5; func f() : Null { a; }; };");
 }
 
 TEST_F(CompilerFixture, class_scoped_func_conflict) {
-    verify_error("class A { let a = 5; func f() : Void { let a = 5; }; };",
+    verify_error("class A { let a = 5; func f() : Null { let a = 5; }; };",
             "Identifier 'a' is already in symtab");
 }
 
@@ -249,15 +249,15 @@ TEST_F(CompilerFixture, class_use_before_definition) {
 }
 
 TEST_F(CompilerFixture, func_has_and) {
-    verify_ok("func m() : Void { and(true, true); };");
+    verify_ok("func m() : Null { and(true, true); };");
 }
 
 TEST_F(CompilerFixture, func_has_or) {
-    verify_ok("func m() : Void { or(false, false); };");
+    verify_ok("func m() : Null { or(false, false); };");
 }
 
 TEST_F(CompilerFixture, func_has_not) {
-    verify_ok("func m() : Void { not(true); };");
+    verify_ok("func m() : Null { not(true); };");
 }
 
 TEST_F(CompilerFixture, func_has_Boolean) {
@@ -281,19 +281,19 @@ TEST_F(CompilerFixture, func_no_class_def_as_var_name) {
 }
 
 TEST_F(CompilerFixture, func_no_builtin_assignment_and) {
-    verify_error("func m() : Void { and = or; };", "Overriding builtin 'and' is not allowed");
+    verify_error("func m() : Null { and = or; };", "Overriding builtin 'and' is not allowed");
 }
 
 TEST_F(CompilerFixture, func_no_builtin_assignment_or) {
-    verify_error("func m() : Void { or = and; };", "Overriding builtin 'or' is not allowed");
+    verify_error("func m() : Null { or = and; };", "Overriding builtin 'or' is not allowed");
 }
 
 TEST_F(CompilerFixture, func_no_builtin_assignment_not) {
-    verify_error("func m() : Void { not = not; };", "Overriding builtin 'not' is not allowed");
+    verify_error("func m() : Null { not = not; };", "Overriding builtin 'not' is not allowed");
 }
 
 TEST_F(CompilerFixture, func_hello_world) {
-    verify_ok(R"(import io; func main() : Void { io.print("Hello world!\n"); };)");
+    verify_ok(R"(import io; func main() : Null { io.print("Hello world!\n"); };)");
 }
 
 TEST_F(CompilerFixture, func_return) {
@@ -306,6 +306,11 @@ TEST_F(CompilerFixture, func_return_mismatch) {
             "type 'Integer64'");
 }
 
+TEST_F(CompilerFixture, func_return_missing) {
+    verify_error(R"(func f() : Integer64 {};)",
+            "Function is missing return value");
+}
+
 TEST_F(CompilerFixture, return_misplaced_module) {
     verify_error(R"(return a;)", "Misplaced return statement");
 }
@@ -315,17 +320,17 @@ TEST_F(CompilerFixture, return_misplaced_class) {
 }
 
 TEST_F(CompilerFixture, while_simple) {
-    verify_ok(R"(func f() : Void {while(true) {};};)");
+    verify_ok(R"(func f() : Null {while(true) {};};)");
 }
 
 TEST_F(CompilerFixture, while_test_int) {
     verify_error(
-            R"(func f() : Void {while(1) {};};)", "While only accepts tests of type 'Boolean'");
+            R"(func f() : Null {while(1) {};};)", "While only accepts tests of type 'Boolean'");
 }
 
 TEST_F(CompilerFixture, while_test_str) {
     verify_error(
-            R"(func f() : Void {while("1") {};};)", "While only accepts tests of type 'Boolean'");
+            R"(func f() : Null {while("1") {};};)", "While only accepts tests of type 'Boolean'");
 }
 
 TEST_F(CompilerFixture, while_misplaced_module) {
@@ -337,32 +342,32 @@ TEST_F(CompilerFixture, while_misplaced_class) {
 }
 
 TEST_F(CompilerFixture, while_complex) {
-    verify_ok(R"(class A{ let i = 0; func f():Void { while(i<5) {i = i + 1;}; };};)");
+    verify_ok(R"(class A{ let i = 0; func f():Null { while(i<5) {i = i + 1;}; };};)");
 }
 
 TEST_F(CompilerFixture, if_complex_lt) {
-    verify_ok(R"(class A{ let i = 0; func f():Void { if(i<5) {i = i + 1;} else {}; }; };)");
+    verify_ok(R"(class A{ let i = 0; func f():Null { if(i<5) {i = i + 1;} else {}; }; };)");
 }
 
 TEST_F(CompilerFixture, if_complex_le) {
-    verify_ok(R"(class A{ let i = 0; func f():Void { if(i<=5) {i = i + 1;} else {}; }; };)");
+    verify_ok(R"(class A{ let i = 0; func f():Null { if(i<=5) {i = i + 1;} else {}; }; };)");
 }
 
 TEST_F(CompilerFixture, if_complex_ge) {
-    verify_ok(R"(class A{ let i = 0; func f():Void { if(i>=5) {i = i + 1;} else {}; }; };)");
+    verify_ok(R"(class A{ let i = 0; func f():Null { if(i>=5) {i = i + 1;} else {}; }; };)");
 }
 
 TEST_F(CompilerFixture, if_complex_gt) {
-    verify_ok(R"(class A{ let i = 0; func f():Void { if(i>5) {i = i + 1;} else {}; }; };)");
+    verify_ok(R"(class A{ let i = 0; func f():Null { if(i>5) {i = i + 1;} else {}; }; };)");
 }
 
 TEST_F(CompilerFixture, if_complex_and) {
     verify_ok(
-            "class A{ let i = 0; func f():Void { if(and(false, true)) {i = i + 1;} else {}; }; };");
+            "class A{ let i = 0; func f():Null { if(and(false, true)) {i = i + 1;} else {}; }; };");
 }
 
 TEST_F(CompilerFixture, if_complex_and_gt_lt) {
-    verify_ok("class A{ let i = 0; func f():Void { if(and(i>5, i<10)) {i = i + 1;} else {}; }; };");
+    verify_ok("class A{ let i = 0; func f():Null { if(and(i>5, i<10)) {i = i + 1;} else {}; }; };");
 }
 
 TEST_F(CompilerFixture, let_while) {
@@ -374,7 +379,7 @@ TEST_F(CompilerFixture, let_if_the_infamous) {
 }
 
 TEST_F(CompilerFixture, if_simple) {
-    verify_ok(R"(func f():Void{if(true) {};};)");
+    verify_ok(R"(func f():Null{if(true) {};};)");
 }
 
 TEST_F(CompilerFixture, if_misplaced_module) {
@@ -386,25 +391,25 @@ TEST_F(CompilerFixture, if_misplaced_class) {
 }
 
 TEST_F(CompilerFixture, class_scope_pure) {
-    verify_error(R"(class A{}; func f():Void{let a:A; a.Integer64;};)",
+    verify_error(R"(class A{}; func f():Null{let a:A; a.Integer64;};)",
             "Identifier 'a' has no subsymbol 'Integer64'");
 }
 
 TEST_F(CompilerFixture, if_test_int) {
-    verify_error(R"(func f():Void{if(1) {};};)", "If only accepts tests of type 'Boolean'");
+    verify_error(R"(func f():Null{if(1) {};};)", "If only accepts tests of type 'Boolean'");
 }
 
 TEST_F(CompilerFixture, if_test_str) {
-    verify_error(R"(func f():Void{if(1){};};)", "If only accepts tests of type 'Boolean'");
+    verify_error(R"(func f():Null{if(1){};};)", "If only accepts tests of type 'Boolean'");
 }
 
 TEST_F(CompilerFixture, if_else_test_str) {
-    verify_ok(R"(func f():Void{if(false){} else {};};)");
+    verify_ok(R"(func f():Null{if(false){} else {};};)");
 }
 
 TEST_F(CompilerFixture, func_use_before_definition) {
     verify_ok(R"(import io;
-        func say_hello() : Void {
+        func say_hello() : Null {
             let h = get_hello();
         };
         func get_hello() : String {
@@ -415,7 +420,7 @@ TEST_F(CompilerFixture, func_use_before_definition) {
 
 TEST_F(CompilerFixture, assignment_type_mismatch_func) {
     verify_error(R"(
-        func f() : Void {
+        func f() : Null {
             let h : Integer64;
             h = g();
         };
@@ -427,7 +432,7 @@ TEST_F(CompilerFixture, assignment_type_mismatch_func) {
 TEST_F(CompilerFixture, let_type_mismatch_func) {
     verify_error(
             R"(
-        func f() : Void {
+        func f() : Null {
             let h : Integer64 = g();
             h = g();
         };
@@ -437,46 +442,46 @@ TEST_F(CompilerFixture, let_type_mismatch_func) {
 }
 
 TEST_F(CompilerFixture, let_type_mismatch_var) {
-    verify_error(R"(func f() : Void { let h : Integer64 = "string"; };)",
+    verify_error(R"(func f() : Null { let h : Integer64 = "string"; };)",
             "Initializer type 'String' does not match explicit type 'Integer64'");
 }
 
 TEST_F(CompilerFixture, assignment_type_mismatch_var) {
-    verify_error(R"(func f() : Void { let h : Integer64; h = "string"; };)",
+    verify_error(R"(func f() : Null { let h : Integer64; h = "string"; };)",
             "Left type 'Integer64' of assignment does not match the right "
             "type 'String'");
 }
 
 TEST_F(CompilerFixture, func_missing) {
-    verify_error("func say_hello() : Void { let h = get_hello(); };",
+    verify_error("func say_hello() : Null { let h = get_hello(); };",
             "Identifier 'get_hello' is not found");
 }
 
 TEST_F(CompilerFixture, import_subsymbol_missing) {
-    verify_error("import io; func f() : Void { io.missing(); };",
+    verify_error("import io; func f() : Null { io.missing(); };",
             "Identifier 'io.missing' is not found");
 }
 
 TEST_F(CompilerFixture, func_call_argnum_mismatch) {
-    verify_error("import io; func f() : Void { io.print(); };",
+    verify_error("import io; func f() : Null { io.print(); };",
             "Call to function 'io.print' has wrong number of arguments");
 }
 
 TEST_F(CompilerFixture, func_call_type_mismatch) {
-    verify_error("func g(s: String): Void{ };func f() : Void { g(42); };",
+    verify_error("func g(s: String): Null{ };func f() : Null { g(42); };",
             "Argument 1 in call to function 'g' has type 'Integer64'"
             " which does not match definition type 'String'");
 }
 
 TEST_F(CompilerFixture, io_print_call_overload_int) {
-    verify_ok("import io; func f() : Void { io.print(42); };");
+    verify_ok("import io; func f() : Null { io.print(42); };");
 }
 
 TEST_F(CompilerFixture, io_print_call_overload_bool) {
-    verify_ok("import io; func f() : Void { io.print(true); };");
+    verify_ok("import io; func f() : Null { io.print(true); };");
 }
 
 TEST_F(CompilerFixture, io_print_call_overload_custom) {
-    verify_error("import io; class C {}; func f() : Void { let c: C; io.print(c); };");
+    verify_error("import io; class C {}; func f() : Null { let c: C; io.print(c); };");
 }
 } // namespace kiraz
