@@ -311,6 +311,15 @@ TEST_F(CompilerFixture, func_return_missing) {
             "Function is missing return value");
 }
 
+TEST_F(CompilerFixture, class_return_this) {
+    verify_ok(R"(class C { let i = 0; func f() : C { i = i + 1; return this; };};)");
+}
+
+TEST_F(CompilerFixture, class_return_this_type_mismatch) {
+    verify_error(R"(class C { func f() : Integer64 { return this; };};)", 
+        "Return statement type 'C' does not match function return type 'Integer64'");
+}
+
 TEST_F(CompilerFixture, return_misplaced_module) {
     verify_error(R"(return a;)", "Misplaced return statement");
 }
