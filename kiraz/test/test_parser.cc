@@ -25,7 +25,7 @@ struct ParserFixture : public testing::Test {
         }
 
         yydebug = 0;
-        Token::colno = 0;
+        Token::colno = 1;
         curtoken.reset();
     }
 
