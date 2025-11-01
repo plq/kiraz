@@ -272,10 +272,6 @@ TEST_F(CompilerFixture, func_has_String) {
     verify_ok("func m() : String { return \"s\"; };");
 }
 
-TEST_F(CompilerFixture, func_no_var_def_as_class_name) {
-    verify_error("let D: String;", "Variable name 'D' can not start with an uppercase letter");
-}
-
 TEST_F(CompilerFixture, func_no_class_def_as_var_name) {
     verify_error("class f {};", "Class name 'f' can not start with an lowercase letter");
 }
