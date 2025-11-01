@@ -288,6 +288,34 @@ TEST_F(CompilerFixture, func_no_builtin_assignment_not) {
     verify_error("func m() : Null { not = not; };", "Overriding builtin 'not' is not allowed");
 }
 
+TEST_F(CompilerFixture, func_no_builtin_assignment_bool_00) {
+    verify_error("func m() : Null { false = false; };");
+}
+TEST_F(CompilerFixture, func_no_builtin_assignment_bool_01) {
+    verify_error("func m() : Null { false = true; };");
+}
+TEST_F(CompilerFixture, func_no_builtin_assignment_bool_10) {
+    verify_error("func m() : Null { true = false; };");
+}
+TEST_F(CompilerFixture, func_no_builtin_assignment_bool_11) {
+    verify_error("func m() : Null { true = true; };");
+}
+
+TEST_F(CompilerFixture, func_no_assignment_module_int) {
+    verify_error("import io; func m() : Null { io=5; };",
+            "Left type 'Module' of assignment does not match the right type 'Integer64'");
+}
+
+TEST_F(CompilerFixture, func_no_assignment_module_string) {
+    verify_error("import io; func m() : Null { io=\"5\"; };",
+            "Left type 'Module' of assignment does not match the right type 'String'");
+}
+
+TEST_F(CompilerFixture, func_no_assignment_module_module) {
+    verify_error("import io; func m() : Null { io=io; };",
+            "Overriding imported module 'io' is not allowed");
+}
+
 TEST_F(CompilerFixture, func_hello_world) {
     verify_ok(R"(import io; func main() : Null { io.print("Hello world!\n"); };)");
 }
