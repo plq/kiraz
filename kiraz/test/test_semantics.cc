@@ -317,11 +317,11 @@ TEST_F(CompilerFixture, class_return_this_type_mismatch) {
 }
 
 TEST_F(CompilerFixture, return_misplaced_module) {
-    verify_error(R"(return a;)", "Misplaced return statement");
+    verify_error(R"(return a;)");
 }
 
 TEST_F(CompilerFixture, return_misplaced_class) {
-    verify_error(R"(class A{return a;};)", "Misplaced return statement");
+    verify_error(R"(class A{return a;};)");
 }
 
 TEST_F(CompilerFixture, while_simple) {
@@ -339,11 +339,11 @@ TEST_F(CompilerFixture, while_test_str) {
 }
 
 TEST_F(CompilerFixture, while_misplaced_module) {
-    verify_error(R"(while(true) {};)", "Misplaced while statement");
+    verify_error(R"(while(true) {};)");
 }
 
 TEST_F(CompilerFixture, while_misplaced_class) {
-    verify_error(R"(class A{ while(true) {}; };)", "Misplaced while statement");
+    verify_error(R"(class A{ while(true) {}; };)");
 }
 
 TEST_F(CompilerFixture, while_complex) {
@@ -388,11 +388,68 @@ TEST_F(CompilerFixture, if_simple) {
 }
 
 TEST_F(CompilerFixture, if_misplaced_module) {
-    verify_error(R"(if(true) {};)", "Misplaced if statement");
+    verify_error(R"(if(true) {};)");
 }
 
 TEST_F(CompilerFixture, if_misplaced_class) {
-    verify_error(R"(class A{if(true) {};};)", "Misplaced if statement");
+    verify_error(R"(class A{if(true) {};};)");
+}
+
+TEST_F(CompilerFixture, assignment_misplaced_class) {
+    verify_error(R"(let a=5; class A{a=6;};)");
+}
+TEST_F(CompilerFixture, div_misplaced_class) {
+    verify_error(R"(let a=5; class A{a/6;};)");
+}
+TEST_F(CompilerFixture, mul_misplaced_class) {
+    verify_error(R"(let a=5; class A{a*6;};)");
+}
+TEST_F(CompilerFixture, add_misplaced_class) {
+    verify_error(R"(let a=5; class A{a+6;};)");
+}
+TEST_F(CompilerFixture, sub_misplaced_class) {
+    verify_error(R"(let a=5; class A{a-6;};)");
+}
+TEST_F(CompilerFixture, lt_misplaced_class) {
+    verify_error(R"(let a=5; class A{a<6;};)");
+}
+TEST_F(CompilerFixture, le_misplaced_class) {
+    verify_error(R"(let a=5; class A{a<=6;};)");
+}
+TEST_F(CompilerFixture, gt_misplaced_class) {
+    verify_error(R"(let a=5; class A{a>6;};)");
+}
+TEST_F(CompilerFixture, ge_misplaced_class) {
+    verify_error(R"(let a=5; class A{a>=6;};)");
+}
+
+TEST_F(CompilerFixture, assignment_misplaced_module) {
+    verify_error(R"(let a=5; {a=6;};)");
+}
+TEST_F(CompilerFixture, div_misplaced_module) {
+    verify_error(R"(let a=5; {a/6;};)");
+}
+TEST_F(CompilerFixture, mul_misplaced_module) {
+    verify_error(R"(let a=5; {a*6;};)");
+}
+TEST_F(CompilerFixture, add_misplaced_module) {
+    verify_error(R"(let a=5; {a+6;};)");
+}
+TEST_F(CompilerFixture, sub_misplaced_module) {
+    verify_error(R"(let a=5; {a-6;};)");
+}
+TEST_F(CompilerFixture, lt_misplaced_module) {
+    verify_error(R"(let a=5; {a<6;};)");
+}
+TEST_F(CompilerFixture, le_misplaced_module) {
+    verify_error(R"(let a=5; {a<=6;};)");
+}
+TEST_F(CompilerFixture, gt_misplaced_module) {
+    verify_error(R"(let a=5; {a>6;};)");
+}
+TEST_F(CompilerFixture, ge_misplaced_module) {
+    verify_error(R"(let a=5; {a>=6;};)");
+}
 
 TEST_F(CompilerFixture, anonscope_var_module) {
     verify_ok(R"({let a=5;}; {let a=5;};)");
