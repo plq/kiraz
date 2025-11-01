@@ -476,6 +476,12 @@ TEST_F(ParserFixture, return_literal) {
 TEST_F(ParserFixture, return_func_call) {
     verify_single("return a.b(c,d,e);",
             "Return(Call(n=Dot(l=Id(a), r=Id(b)), a=FuncArgs([Id(c), Id(d), Id(e)])))");
+
+TEST_F(ParserFixture, anonscope_func) {
+    verify_single(R"(func f():Null{ { let a=5; }; { let a=5; }; };)",
+            "Func(n=Id(f), a=[], r=Id(Null), s="
+            "[[Let(n=Id(a), i=Int(5))],"
+            " [Let(n=Id(a), i=Int(5))]])");
 }
 
 TEST_F(ParserFixture, return_logic) {

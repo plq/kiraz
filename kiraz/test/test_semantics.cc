@@ -393,6 +393,13 @@ TEST_F(CompilerFixture, if_misplaced_module) {
 
 TEST_F(CompilerFixture, if_misplaced_class) {
     verify_error(R"(class A{if(true) {};};)", "Misplaced if statement");
+
+TEST_F(CompilerFixture, anonscope_var_module) {
+    verify_ok(R"({let a=5;}; {let a=5;};)");
+}
+
+TEST_F(CompilerFixture, anonscope_var_func) {
+    verify_ok(R"(func f():Null{ {let a=5;}; {let a=5;}; };)");
 }
 
 TEST_F(CompilerFixture, class_scope_pure) {
