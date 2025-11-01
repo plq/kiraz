@@ -565,7 +565,7 @@ TEST_F(CompilerFixture, func_call_argnum_mismatch) {
 }
 
 TEST_F(CompilerFixture, func_call_type_mismatch) {
-    verify_error("func g(s: String): Null{ };func f() : Null { g(42); };",
+    verify_error("func g(s: String): Null{ }; func f() : Null { g(42); };",
             "Argument 1 in call to function 'g' has type 'Integer64'"
             " which does not match definition type 'String'");
 }
@@ -581,4 +581,5 @@ TEST_F(CompilerFixture, io_print_call_overload_bool) {
 TEST_F(CompilerFixture, io_print_call_overload_custom) {
     verify_error("import io; class C {}; func f() : Null { let c: C; io.print(c); };");
 }
+
 } // namespace kiraz

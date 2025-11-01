@@ -229,48 +229,48 @@ TEST_F(WasmGenFixture, module_hello) {
 
 TEST_F(WasmGenFixture, op_let_func_uninit) {
     verify_output( //
-            "import io; func main():Void{let a: Integer64; io.print(a); };", {"void(Integer64)"});
+            "import io; func main():Null{let a: Integer64; io.print(a); };", {"void(Integer64)"});
 }
 
 TEST_F(WasmGenFixture, op_eq_int_void) {
     verify_output( //
             "   import io;"
-            "\n func main():Void{ let a: Integer64; let b: Integer64; io.print(a==b); };",
+            "\n func main():Null{ let a: Integer64; let b: Integer64; io.print(a==b); };",
             {"true"});
 }
 
 TEST_F(WasmGenFixture, op_eq_int_l_void) {
     verify_output( //
             "   import io;"
-            "\n func main():Void{ let a: Integer64=5; let b: Integer64; io.print(a==b); };",
+            "\n func main():Null{ let a: Integer64=5; let b: Integer64; io.print(a==b); };",
             {"false"});
 }
 
 TEST_F(WasmGenFixture, op_eq_int_r_void) {
     verify_output( //
             "   import io;"
-            "\n func main():Void{ let a: Integer64; let b: Integer64=5; io.print(a==b); };",
+            "\n func main():Null{ let a: Integer64; let b: Integer64=5; io.print(a==b); };",
             {"false"});
 }
 
 TEST_F(WasmGenFixture, op_eq_int_l_r_eq) {
     verify_output( //
             "   import io;"
-            "\n func main():Void{ let a: Integer64=5; let b: Integer64=5; io.print(a==b); };",
+            "\n func main():Null{ let a: Integer64=5; let b: Integer64=5; io.print(a==b); };",
             {"true"});
 }
 
 TEST_F(WasmGenFixture, op_eq_int_l_r_ne) {
     verify_output( //
             "   import io;"
-            "\n func main():Void{ let a: Integer64=5; let b: Integer64=15; io.print(a==b); };",
+            "\n func main():Null{ let a: Integer64=5; let b: Integer64=15; io.print(a==b); };",
             {"false"});
 }
 
 TEST_F(WasmGenFixture, op_add_int) {
     verify_output( //
             "   import io;"
-            "\n func main():Void{ let a: Integer64; let b: Integer64; io.print(a+b); };",
+            "\n func main():Null{ let a: Integer64; let b: Integer64; io.print(a+b); };",
             {"void(Integer64)"});
 }
 
@@ -280,7 +280,7 @@ TEST_F(WasmGenFixture, op_add_int_init) {
     auto t = std::to_string(l + r);
     verify_output( //
             (std::stringstream() << "   import io;"
-                                    "\n func main():Void{ let a="
+                                    "\n func main():Null{ let a="
                                  << l << "; let b=" << r << "; io.print(a+b); };")
                     .str(),
             {t});
@@ -289,7 +289,7 @@ TEST_F(WasmGenFixture, op_add_int_init) {
 TEST_F(WasmGenFixture, if_simple_false) {
     verify_output( //
             "   import io;"
-            "\n func main():Void{ if (false) {io.print(\"true\");} else {io.print(\"false\");}; };",
+            "\n func main():Null{ if (false) {io.print(\"true\");} else {io.print(\"false\");}; };",
             {"false"} //
     );
 }
@@ -297,7 +297,7 @@ TEST_F(WasmGenFixture, if_simple_false) {
 TEST_F(WasmGenFixture, if_simple_true) {
     verify_output( //
             "   import io;"
-            "\n func main():Void{ if (true) {io.print(\"true\");} else {io.print(\"false\");}; };",
+            "\n func main():Null{ if (true) {io.print(\"true\");} else {io.print(\"false\");}; };",
             {"true"} //
     );
 }
