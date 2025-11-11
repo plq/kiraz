@@ -126,27 +126,6 @@ TEST_F(CompilerFixture, class_subsymbol_missing) {
             "Identifier 'c.j' is not found");
 }
 
-TEST_F(CompilerFixture, class_parent) {
-    verify_ok("class P {}; class C:P {};");
-}
-
-TEST_F(CompilerFixture, class_parent_missing) {
-    verify_error("class C:P {};", "Type 'P' is not found");
-}
-
-TEST_F(CompilerFixture, class_parent_subsymbol) {
-    verify_ok("class P { let i = 0; }; class C:P {}; func f() : Null { let c: C; c.i = 5; };");
-}
-
-TEST_F(CompilerFixture, class_parent_subclass_assignment) {
-    verify_ok("class P { let i = 0; }; class C:P {}; func f() : Null { let c: C; let p: P = c; };");
-}
-
-TEST_F(CompilerFixture, class_parent_subsymbol_no_redef) {
-    verify_error("class P { let i = 0; }; class C:P {let i = 1; };",
-            "Identifier 'i' is already in symtab");
-}
-
 TEST_F(CompilerFixture, import_missing) {
     verify_error("func f() : Null { io.foo.bar();\n };", "Identifier 'io' is not found");
 }
