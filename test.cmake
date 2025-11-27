@@ -52,7 +52,7 @@ if (KIRAZ_TEST_WASMGEN)
 
     if (KIRAZ_TEST_WASMGEN_MOZJS)
         find_package(PkgConfig REQUIRED)
-        pkg_check_modules(MOZJS REQUIRED mozjs-115)
+        pkg_check_modules(MOZJS REQUIRED mozjs-128)
 
         # mozjs integration
         add_library(mozjs-i9n STATIC
