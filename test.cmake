@@ -52,7 +52,7 @@ if (KIRAZ_TEST_WASMGEN)
 
     if (KIRAZ_TEST_WASMGEN_MOZJS)
         find_package(PkgConfig REQUIRED)
-        pkg_check_modules(MOZJS REQUIRED mozjs-115)
+        pkg_check_modules(MOZJS REQUIRED mozjs-128)
 
         # mozjs integration
         add_library(mozjs-i9n STATIC
@@ -61,10 +61,10 @@ if (KIRAZ_TEST_WASMGEN)
         )
 
         target_link_libraries(mozjs-i9n ${MOZJS_LIBRARIES})
-        target_include_directories(mozjs-i9n SYSTEM PUBLIC ${MOZJS_INCLUDE_DIRS})
-        #target_compile_definitions(mozjs-i9n PUBLIC DEBUG)
+        target_include_directories(mozjs-i9n SYSTEM PUBLIC ${MOZJS_INCLUDE_DIRS} ${MOZJS_CFLAGS_OTHER})
+        # target_compile_definitions(mozjs-i9n PUBLIC DEBUG)
 
-        target_include_directories(test_wasmgen SYSTEM PUBLIC ${MOZJS_INCLUDE_DIRS})
+        target_include_directories(test_wasmgen SYSTEM PUBLIC ${MOZJS_INCLUDE_DIRS} ${MOZJS_CFLAGS_OTHER})
         target_link_libraries(test_wasmgen mozjs-i9n ${MOZJS_LIBRARIES})
         target_compile_definitions(test_wasmgen PRIVATE KIRAZ_HAVE_MOZJS)
 
