@@ -61,7 +61,7 @@ if (KIRAZ_TEST_WASMGEN)
         )
 
         target_link_libraries(mozjs-i9n ${MOZJS_LIBRARIES})
-        target_include_directories(mozjs-i9n SYSTEM PUBLIC ${MOZJS_INCLUDE_DIRS})
+        target_include_directories(mozjs-i9n SYSTEM PUBLIC ${MOZJS_INCLUDE_DIRS} /usr/include/x86_64-linux-gnu/mozjs-128)
         #target_compile_definitions(mozjs-i9n PUBLIC DEBUG)
 
         target_include_directories(test_wasmgen SYSTEM PUBLIC ${MOZJS_INCLUDE_DIRS})
