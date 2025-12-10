@@ -223,7 +223,7 @@ struct WasmGenFixture : public ::testing::Test {
 
 TEST_F(WasmGenFixture, module_hello) {
     verify_output( //
-            "import io; func main(): Integer64 { io.print(\"Hello World!\n\"); return 0; };",
+            "import io; func main(): Integer64 { io.print(\"Hello World!\"); return 0; };",
             {"Hello World!"});
 }
 
